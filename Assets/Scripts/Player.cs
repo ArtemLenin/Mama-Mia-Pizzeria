@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour, IKitchenObjectParent
@@ -11,7 +9,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
     public class OnSelectedCounterChangedEventArgs : EventArgs
     {
-        public ClearCounter selectedCounter;
+        public BaseCounter selectedCounter;
     }
 
     [SerializeField] private float _movementSpeed;
@@ -22,7 +20,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     private bool _isWalking;
     private Vector3 _lastInteraction;
-    private ClearCounter _selectedCounter;
+    private BaseCounter _selectedCounter;
 
     private void Awake()
     {
@@ -56,11 +54,11 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         float interactDistance = 2f;
         if (Physics.Raycast(transform.position, _lastInteraction, out RaycastHit hit, interactDistance, _countersLayerMask))
         {
-            if (hit.transform.TryGetComponent(out ClearCounter clearCounter))
+            if (hit.transform.TryGetComponent(out BaseCounter baseCounter))
             {
-                if (clearCounter != _selectedCounter)
+                if (baseCounter != _selectedCounter)
                 {
-                    SetSelectedCounter(clearCounter);
+                    SetSelectedCounter(baseCounter);
                 }
             }
             else
@@ -116,7 +114,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         return _isWalking;
     }
 
-    private void SetSelectedCounter(ClearCounter selectedCounter)
+    private void SetSelectedCounter(BaseCounter selectedCounter)
     {
         _selectedCounter = selectedCounter;
 
