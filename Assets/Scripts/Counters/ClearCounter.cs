@@ -13,8 +13,30 @@ public class ClearCounter : BaseCounter
         }
         else
         {
-            if (player.KitchenObject) return;
-            KitchenObject.KitchenObjectParent = player;
+            if (player.KitchenObject)
+            {
+                if (player.KitchenObject.TryGetPlate(out PlateKitchenObject plateKitchenObject))
+                {
+                    if (plateKitchenObject.TryAddIngredient(KitchenObject.GetKitchenObjectSO()))
+                    {
+                        KitchenObject.DestroySelf();
+                    }
+                }
+                else
+                {
+                    if (player.KitchenObject.TryGetPlate(out plateKitchenObject))
+                    {
+                        if (plateKitchenObject.TryAddIngredient(KitchenObject.GetKitchenObjectSO()))
+                        {
+                            player.KitchenObject.DestroySelf();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                KitchenObject.KitchenObjectParent = player;
+            }
         }
     }
 }

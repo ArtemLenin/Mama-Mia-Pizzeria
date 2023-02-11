@@ -26,8 +26,21 @@ public class CuttingCounter : BaseCounter, IHasProgress
         }
         else
         {
-            if (player.KitchenObject) return;
-            KitchenObject.KitchenObjectParent = player;
+            if (player.KitchenObject)
+            {
+                if (player.KitchenObject.TryGetPlate(out PlateKitchenObject plateKitchenObject))
+                {
+                    PlateKitchenObject plate = player.KitchenObject as PlateKitchenObject;
+                    if (plate.TryAddIngredient(KitchenObject.GetKitchenObjectSO()))
+                    {
+                        KitchenObject.DestroySelf();
+                    }
+                }
+            }
+            else
+            {
+                KitchenObject.KitchenObjectParent = player;
+            }
         }
     }
 
@@ -44,7 +57,7 @@ public class CuttingCounter : BaseCounter, IHasProgress
             {
                 ProgressNormalized = (float)_cuttingProgress / cuttingRecipeSO.CuttingProgressMax
             });
-            
+
             if (_cuttingProgress >= cuttingRecipeSO.CuttingProgressMax)
             {
                 KitchenObjectSO outputkitchenObjectSO = GetOutputForInput(KitchenObject.GetKitchenObjectSO());
