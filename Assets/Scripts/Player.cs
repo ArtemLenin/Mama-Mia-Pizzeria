@@ -4,7 +4,21 @@ using UnityEngine;
 public class Player : MonoBehaviour, IKitchenObjectParent
 {
     public static Player Instance { get; private set; }
-    public KitchenObject KitchenObject { get; set; }
+    public event EventHandler OnPickedSomething;
+    private KitchenObject _kitchenObject;
+
+    public KitchenObject KitchenObject
+    {
+        get
+        {
+            return _kitchenObject;
+        }
+        set
+        {
+            _kitchenObject = value;
+            if (_kitchenObject) OnPickedSomething?.Invoke(this, EventArgs.Empty);
+        }
+    }
 
     public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
     public class OnSelectedCounterChangedEventArgs : EventArgs
