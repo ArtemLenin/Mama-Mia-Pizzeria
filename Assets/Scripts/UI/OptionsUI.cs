@@ -53,12 +53,12 @@ public class OptionsUI : MonoBehaviour
         });
 
         _moveUpButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.MoveUp); });
-        _moveUpButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.MoveDown); });
-        _moveUpButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.MoveLeft); });
-        _moveUpButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.MoveRight); });
-        _moveUpButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.Interact); });
-        _moveUpButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.InteractAlternate); });
-        _moveUpButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.Pause); });
+        _moveDownButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.MoveDown); });
+        _moveLeftButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.MoveLeft); });
+        _moveRightButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.MoveRight); });
+        _interactiveButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.Interact); });
+        _interactiveAlternateButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.InteractAlternate); });
+        _pauseButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.Pause); });
     }
 
     private void Start()

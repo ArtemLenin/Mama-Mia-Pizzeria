@@ -29,12 +29,14 @@ public class GameInput : MonoBehaviour
     {
         Instance = this;
 
+
+        _actions = new PlayerInputActions();
+        
         if (PlayerPrefs.HasKey(PLAYER_PREFS_BINDINGS))
         {
             _actions.LoadBindingOverridesFromJson(PlayerPrefs.GetString(PLAYER_PREFS_BINDINGS));
         }
 
-        _actions = new PlayerInputActions();
         _actions.Player.Enable();
 
         _actions.Player.Interaction.performed += Interaction_performed;
