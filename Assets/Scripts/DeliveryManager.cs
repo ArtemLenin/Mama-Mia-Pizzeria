@@ -7,7 +7,7 @@ public class DeliveryManager : MonoBehaviour
     public event EventHandler OnRecipeSpawned;
     public event EventHandler OnRecipeCompleted;
     public event EventHandler OnRecipeSuccess;
-    public event EventHandler OnRecipeFailded;
+    public event EventHandler OnRecipeFailed;
     public static DeliveryManager Instance { get; private set; }
     [SerializeField] private RecipeListSO _recipeListSO;
     private List<RecipeSO> _waitingRecipeSOList;
@@ -22,7 +22,7 @@ public class DeliveryManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        _waitingRecipeSOList= new List<RecipeSO>();
+        _waitingRecipeSOList = new List<RecipeSO>();
     }
 
     private void Update()
@@ -32,11 +32,13 @@ public class DeliveryManager : MonoBehaviour
         {
             _spawnRecipeTimer = _spawnRecipeTimerMax;
 
-            if (_waitingRecipeSOList.Count >= _waitingRecipeMax) return;
-            RecipeSO waitingRecipeSO = _recipeListSO.RecipeSOList[UnityEngine.Random.Range(0, _recipeListSO.RecipeSOList.Count)];
-            _waitingRecipeSOList.Add(waitingRecipeSO);
+            if (KitchenGameManager.Instance.IsGamePlaying() && _waitingRecipeSOList.Count < _waitingRecipeMax)
+            {
+                RecipeSO waitingRecipeSO = _recipeListSO.RecipeSOList[UnityEngine.Random.Range(0, _recipeListSO.RecipeSOList.Count)];
+                _waitingRecipeSOList.Add(waitingRecipeSO);
 
-            OnRecipeSpawned?.Invoke(this, EventArgs.Empty);
+                OnRecipeSpawned?.Invoke(this, EventArgs.Empty);
+            }
         }
 
     }
@@ -74,7 +76,7 @@ public class DeliveryManager : MonoBehaviour
                 }
             }
         }
-        OnRecipeFailded?.Invoke(this, EventArgs.Empty);
+        OnRecipeFailed?.Invoke(this, EventArgs.Empty);
     }
 
     public List<RecipeSO> GetWaitingSOList() => _waitingRecipeSOList;

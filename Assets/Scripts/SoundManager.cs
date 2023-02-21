@@ -19,7 +19,7 @@ public class SoundManager : MonoBehaviour
     private void Start()
     {
         DeliveryManager.Instance.OnRecipeSuccess += DeliveryManager_OnRecipeSuccess;
-        DeliveryManager.Instance.OnRecipeFailded += DeliveryManager_OnRecipeFailded;
+        DeliveryManager.Instance.OnRecipeFailed += DeliveryManager_OnRecipeFailed;
         Player.Instance.OnPickedSomething += Player_OnPickedSomething;
         BaseCounter.OnAnyObjectPlacedHere += BaseCounter_OnAnyObjectPlacedHere;
         CuttingCounter.OnAnyCut += CuttingCounter_OnAnyCut;
@@ -50,7 +50,7 @@ public class SoundManager : MonoBehaviour
         PlaySound(_audioClipRefsSO.Chop, cuttingCounter.transform.position);
     }
 
-    private void DeliveryManager_OnRecipeFailded(object sender, System.EventArgs e)
+    private void DeliveryManager_OnRecipeFailed(object sender, System.EventArgs e)
     {
         PlaySound(_audioClipRefsSO.DeliveryFail, DeliveryCounter.Instance.transform.position);
     }
@@ -74,6 +74,16 @@ public class SoundManager : MonoBehaviour
     public void PlayFootstepsSound(Vector3 position, float volume)
     {
         PlaySound(_audioClipRefsSO.Footstep, position, volume);
+    }
+
+    public void PlayCountdownSound()
+    {
+        PlaySound(_audioClipRefsSO.Warning, Vector3.zero);
+    }
+
+    public void PlayWarningSound(Vector3 position)
+    {
+        PlaySound(_audioClipRefsSO.Warning, position);
     }
 
     public void ChangeVolue()
