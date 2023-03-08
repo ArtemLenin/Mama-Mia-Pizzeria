@@ -1,7 +1,8 @@
 using System;
+using Unity.Netcode;
 using UnityEngine;
 
-public class Player : MonoBehaviour, IKitchenObjectParent
+public class Player : NetworkBehaviour, IKitchenObjectParent
 {
     public static Player Instance { get; private set; }
     public event EventHandler OnPickedSomething;
@@ -28,7 +29,6 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     [SerializeField] private float _movementSpeed;
     [SerializeField] private float _rotationSpeed = 10f;
-    [SerializeField] private GameInput _gameInput;
     [SerializeField] private LayerMask _countersLayerMask;
     [SerializeField] private Transform _kitchenObjectHoldPoint;
 
@@ -38,14 +38,13 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     private void Awake()
     {
-        if (Instance != null) Debug.LogError("There is more than one Player instance");
-        Instance = this;
+        //Instance = this;
     }
 
     private void Start()
     {
-        _gameInput.OnInteractAction += GameInput_OnInteractAction;
-        _gameInput.OnInteractAlternativeAction += GameInput_OnInteractAlternativeAction; ;
+        GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
+        GameInput.Instance.OnInteractAlternativeAction += GameInput_OnInteractAlternativeAction; ;
     }
 
     private void GameInput_OnInteractAlternativeAction(object sender, EventArgs e)
@@ -68,7 +67,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     private void HandleInteractions()
     {
-        Vector2 inputVector = _gameInput.GetMovementNormalizedVector();
+        Vector2 inputVector = GameInput.Instance.GetMovementNormalizedVector();
 
         Vector3 direction = new Vector3(inputVector.x, 0f, inputVector.y);
         if (direction != Vector3.zero) _lastInteraction = direction;
@@ -96,7 +95,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     private void HandleMovement()
     {
-        Vector2 inputVector = _gameInput.GetMovementNormalizedVector();
+        Vector2 inputVector = GameInput.Instance.GetMovementNormalizedVector();
 
         Vector3 direction = new Vector3(inputVector.x, 0f, inputVector.y);
 
